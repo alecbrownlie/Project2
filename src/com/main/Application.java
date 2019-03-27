@@ -1,27 +1,31 @@
 package com.main;
 
+import java.util.List;
 import java.util.Scanner;
+import com.algorithms.Karatsuba;
 
 public class Application {
 	private static String PROJECT_BANNER = "----- Project 02: Multiplication of Large Integers -----";
-	private static String INSTRUCTIONS = "Please select a task to execute: ";
-	private static String WELCOME_MSG = "      Welcome! " + INSTRUCTIONS;
+	private static String INSTRUCTIONS = "Please enter a single positive value for integer ";
+	private static String TASK_INSTRUCTIONS = "Please select a task to execute: ";
 	private static String MULTIPLICATION = "Multiplication";
 	private static String EXPONENTIATION = "Exponentiation";
+	private static String NAC_STR = "Not a choice.";
+	private static String NAN_STR = "Not a number.";
 	private static String QUIT_STR = "Quit";
+	private static String SELECTED = "Selected: ";
+
+	private static Karatsuba karatsuba = new Karatsuba();
 
 	private static Boolean quit = false;
 
 	public static void main(String[] args) {
-		printMenu();
-		while (!quit) {
-			processUserInput();
-		}
-	}
-
-	private static void printMenu() {
 		System.out.println(PROJECT_BANNER);
-		System.out.println(WELCOME_MSG);
+		int a = getUserInput("A");
+		int b = getUserInput("B");
+		while (!quit) {
+			processUserInput(a, b);
+		}
 	}
 
 	private static void printChoices() {
@@ -30,33 +34,53 @@ public class Application {
 		System.out.println("3)    " + QUIT_STR);
 	}
 
-	private static void processUserInput() {
+	private static int getUserInput(String var) {
 		Scanner scanner = new Scanner(System.in);
 		boolean toProcess = true;
+		int result = 0;
+		try {
+			while (toProcess) {
+				System.out.println(INSTRUCTIONS + var + ": ");
+				result = Integer.parseInt(scanner.nextLine());
+				if (result > 0) return result;
+			}
+		} catch (java.lang.NumberFormatException e) {
+			System.out.println(NAN_STR);
+			getUserInput(var);
+		}
+		return result;
+	}
+
+	private static void processUserInput(int a, int b) {
+		Scanner scanner = new Scanner(System.in);
+		boolean toProcess = true;
+	
 		try {
 			while (toProcess) {
 				printChoices();
 				switch (Integer.parseInt(scanner.nextLine())) {
 					case 1:
-						System.out.println("Selected: " + MULTIPLICATION);
+						System.out.println(SELECTED + MULTIPLICATION);
+						karatsuba.multiply(a, b);
 						toProcess = false;
 						break;
 					case 2: 
-						System.out.println("Selected: " + EXPONENTIATION);
+						System.out.println(SELECTED + EXPONENTIATION);
+						// karatsuba.exponentiation(a, b);
 						toProcess = false;
 						break;
 					case 3: 
-						System.out.println("Selected: " + QUIT_STR);
+						System.out.println(SELECTED + QUIT_STR);
 						quit = true;
 						toProcess = false;
 						break;
 					default:
-						System.out.println("Not a choice. " + INSTRUCTIONS);
+						System.out.println(NAC_STR + TASK_INSTRUCTIONS);
 				}	
 			}
 		} catch (java.lang.NumberFormatException e) {
-			System.out.println("Not a number. " + INSTRUCTIONS);
-			processUserInput();
+			System.out.println(NAN_STR + TASK_INSTRUCTIONS);
+			processUserInput(a, b);
 		}
 	}
 }
