@@ -61,7 +61,8 @@ public class Application {
 				switch (Integer.parseInt(scanner.nextLine())) {
 					case 1:
 						System.out.println(SELECTED + MULTIPLICATION);
-						karatsuba.multiply(a, b);
+						String result = karatsuba.k_mult(Integer.toString(a), Integer.toString(b));
+						System.out.println("Result: " + result);
 						toProcess = false;
 						break;
 					case 2: 
