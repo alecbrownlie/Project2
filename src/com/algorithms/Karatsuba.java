@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import static com.util.KaratsubaUtil.add;
 import static com.util.KaratsubaUtil.subtract;
 import static com.util.KaratsubaUtil.multiply;
+import static com.util.KaratsubaUtil.padC0C1;
 import static com.util.KaratsubaUtil.padZeros;
 import static com.util.KaratsubaUtil.trimZeros;
 
@@ -40,8 +41,8 @@ public class Karatsuba {
 		}       
 
 		// pad zeros to match length
-		b = padZeros(a, b);
-		a = padZeros(b, a);
+		if (lengthA < lengthB) a = padZeros(a, b);
+		else if (lengthA > lengthB) b = padZeros(b, a);
 
 		int size = Math.max(lengthA, lengthB);
 		
@@ -50,22 +51,22 @@ public class Karatsuba {
 		String b0 = b.substring(0, size / 2); 
 		String b1 = b.substring(size / 2, size);
 
-		String c0 = k_mult(a0, b0);      
-		String c2 = k_mult(a1, b1);
-
 		String sumAHalves = add(a0, a1);
 		String sumBHalves = add(b0, b1);
 
-		String productABHalves = k_mult(sumAHalves, sumBHalves);
-		 
-		String c1  = subtract(subtract(productABHalves, c0), c2);
+		String c0 = k_mult(a0, b0);      
+		String c2 = k_mult(a1, b1);
+
+		String productABHalves = multiply(sumAHalves, sumBHalves);
+		String diffABC0 = subtract(productABHalves, c0); 
+		String c1  = subtract(diffABC0, c2);
 		
-		// add c0, c1 padding if necessary
-		for (int i = 0; i < 2 * Math.ceil(size / 2); i++) {
-			if (i < Math.ceil(size / 2)) c1 += "0";
+		double n = (double) size;
+		for (int i = 0; i < 2 * Math.ceil(n / 2); i++) {
+			if (i < Math.ceil(n / 2)) c1 += "0";
 			c0 += "0";
 		}
-		
 		return trimZeros(add(add(c0, c1), c2));
 	}
 }
+	

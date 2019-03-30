@@ -8,15 +8,18 @@ import java.lang.StringBuilder;
 public class KaratsubaUtil{
 
 	public static String add(String a, String b) {
+		int lengthA = a.length();
+		int lengthB = b.length();
 		String result = "";
 		int carry = 0;
-		
+		int maxLength = Math.max(lengthA, lengthB);
+
 		// pad zeros to match length
-		b = padZeros(a, b);
-		a = padZeros(b, a);
+		if (lengthA < lengthB) a = padZeros(a, b);
+		else if (lengthA > lengthB) b = padZeros(b, a);
 		
 		int i = 0;  
-		for (int j = a.length() - 1; j >= 0 ; j--) {
+		for (int j = maxLength - 1; j >= 0 ; j--) {
 			int sum = Integer.parseInt(Character.toString(a.charAt(j))) + Integer.parseInt(Character.toString(b.charAt(j))) + carry;
 			if (sum >= 10) {
 				carry = 1;
@@ -31,14 +34,18 @@ public class KaratsubaUtil{
 	}
 
 	public static String subtract(String a, String b) {
+		int lengthA = a.length();
+		int lengthB = b.length();
 		String result = "";
-		String[] carry = a.split(""); 
+		int maxLength = Math.max(lengthA, lengthB);
 
 		// pad zeros to match length
-		b = padZeros(a, b);
-		a = padZeros(b, a);
+		if (lengthA < lengthB) a = padZeros(a, b);
+		else if (lengthA > lengthB) b = padZeros(b, a);
+		
+		String[] carry = a.split(""); 
 
-		for (int i = a.length() - 1; i >= 0; i--) {
+		for (int i = maxLength - 1; i >= 0; i--) {
 			int digitA = Integer.parseInt(carry[i]);
 			int digitB = Integer.parseInt(Character.toString(b.charAt(i)));
 			
@@ -59,11 +66,19 @@ public class KaratsubaUtil{
 		return Integer.toString(Integer.parseInt(a) * Integer.parseInt(b));
 	}
 
+	public static void padC0C1(String c0, String c1, int size) {
+		double n = (double) size;
+		for (int i = 0; i < 2 * Math.ceil(n / 2); i++) {
+			if (i < Math.ceil(n / 2)) c1 += "0";
+			c0 += "0";
+		}
+	}
+
 	public static String padZeros(String a, String b) {
-		int n = Math.abs(a.length() - b.length());
-		for (int i = 1; i <= n; i++)
-			b = "0" + b;
-		return b;
+		int maxLength = Math.abs(a.length() - b.length());
+		for (int i = 1; i <= maxLength; i++)
+			a = "0" + a;
+		return a;
 	}
 
 	public static String trimZeros(String str) {
