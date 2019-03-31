@@ -9,27 +9,20 @@ import java.util.stream.Collectors;
 import static com.util.KaratsubaUtil.add;
 import static com.util.KaratsubaUtil.subtract;
 import static com.util.KaratsubaUtil.multiply;
-import static com.util.KaratsubaUtil.padC0C1;
 import static com.util.KaratsubaUtil.padZeros;
 import static com.util.KaratsubaUtil.trimZeros;
 
 public class Karatsuba {
  
-    // N * (1/D) = Q
-	public Integer exponentiation(Integer a, Integer b) {
-		Integer result = 0;
-		Integer val = 0;
+	public String exponentiation(Integer a, Integer b) {
+		if (b == 0) return "1";
 
-		if (b == 0) return 1;
+		String val = exponentiation(a, b / 2);
+
 		if (b % 2 == 0) {
-			val = exponentiation(a, b / 2);
-			result = Integer.parseInt(karatsuba_mult(val.toString(), val.toString()));
-		} else {
-			val = exponentiation(a, (b - 1) / 2);
-			result = Integer.parseInt(karatsuba_mult(val.toString(), val.toString()));
-			result = Integer.parseInt(karatsuba_mult(result.toString(), a.toString()));
-		}
-		return result;
+			return karatsuba_mult(val, val);
+		} 
+		return karatsuba_mult(karatsuba_mult(val, val), a.toString());
 	}
 
 	public String karatsuba_mult(String a, String b) {
@@ -57,8 +50,8 @@ public class Karatsuba {
 
 		String c0 = karatsuba_mult(a0, b0);      
 		String c2 = karatsuba_mult(a1, b1);
-
-		String productABHalves = multiply(sumAHalves, sumBHalves);
+		String productABHalves = karatsuba_mult(sumAHalves, sumBHalves);
+	
 		String diffABC0 = subtract(productABHalves, c0); 
 		String c1  = subtract(diffABC0, c2);
 		

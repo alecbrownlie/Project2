@@ -42,7 +42,7 @@ public class KaratsubaUtil{
 		// pad zeros to match length
 		if (lengthA < lengthB) a = padZeros(a, b);
 		else if (lengthA > lengthB) b = padZeros(b, a);
-		
+
 		String[] carry = a.split(""); 
 
 		for (int i = maxLength - 1; i >= 0; i--) {
@@ -64,14 +64,6 @@ public class KaratsubaUtil{
 
 	public static String multiply(String a, String b) {
 		return Integer.toString(Integer.parseInt(a) * Integer.parseInt(b));
-	}
-
-	public static void padC0C1(String c0, String c1, int size) {
-		double n = (double) size;
-		for (int i = 0; i < 2 * Math.ceil(n / 2); i++) {
-			if (i < Math.ceil(n / 2)) c1 += "0";
-			c0 += "0";
-		}
 	}
 
 	public static String padZeros(String a, String b) {

@@ -61,15 +61,11 @@ public class Application {
 				switch (Integer.parseInt(scanner.nextLine())) {
 					case 1:
 						System.out.println(SELECTED + MULTIPLICATION);
-						String multiplyResult = karatsuba.karatsuba_mult(Integer.toString(a), Integer.toString(b));
-						System.out.println("Result: " + multiplyResult);
-						toProcess = false;
+						System.out.println("Result: " + karatsuba.karatsuba_mult(Integer.toString(a), Integer.toString(b)));
 						break;
 					case 2: 
 						System.out.println(SELECTED + EXPONENTIATION);
-						Integer exponentResult = karatsuba.exponentiation(a, b);
-						System.out.println("Result: " + exponentResult);
-						toProcess = false;
+						System.out.println("Result: " + karatsuba.exponentiation(a, b));
 						break;
 					case 3: 
 						System.out.println(SELECTED + QUIT_STR);
