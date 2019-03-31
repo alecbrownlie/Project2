@@ -16,13 +16,8 @@ public class Karatsuba {
  
 	public String exponentiation(Integer a, Integer b) {
 		if (b == 0) return "1";
-
 		String val = exponentiation(a, b / 2);
-
-		if (b % 2 == 0) {
-			return karatsuba_mult(val, val);
-		} 
-		return karatsuba_mult(karatsuba_mult(val, val), a.toString());
+		return (b % 2 == 0) ? karatsuba_mult(val, val) : karatsuba_mult(karatsuba_mult(val, val), a.toString());
 	}
 
 	public String karatsuba_mult(String a, String b) {
@@ -45,15 +40,11 @@ public class Karatsuba {
 		String b0 = b.substring(0, size / 2); 
 		String b1 = b.substring(size / 2, size);
 
-		String sumAHalves = add(a0, a1);
-		String sumBHalves = add(b0, b1);
-
 		String c0 = karatsuba_mult(a0, b0);      
 		String c2 = karatsuba_mult(a1, b1);
-		String productABHalves = karatsuba_mult(sumAHalves, sumBHalves);
+		String productABHalves = karatsuba_mult(add(a0, a1), add(b0, b1));
 	
-		String diffABC0 = subtract(productABHalves, c0); 
-		String c1  = subtract(diffABC0, c2);
+		String c1  = subtract(subtract(productABHalves, c0), c2);
 		
 		double n = (double) size;
 		for (int i = 0; i < 2 * Math.ceil(n / 2); i++) {
